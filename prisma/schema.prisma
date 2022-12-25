@@ -21,5 +21,28 @@ model User{
   hash String
   hashedRt String?
 
+  transaction Transaction[]
+
   @@map("users")
+}
+
+enum TransactionType {
+  DEBIT
+  CREDIT
+}
+
+
+model Transaction{
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId],references: [id])
+
+  transactionType TransactionType @default(DEBIT)
+  amount Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  category String?
+
+
+  @@map("transations")
 }
